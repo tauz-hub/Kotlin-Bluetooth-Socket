@@ -92,8 +92,7 @@ class MainActivity : AppCompatActivity() {
             } catch (e: IOException) {
                 Toast.makeText(getBaseContext(), "A conexão com o Socket falhou", Toast.LENGTH_LONG).show();
             }
-            // estabelecer conexão
-            println("aqui")
+            
             try {
 
                 btSocket!!.connect()
@@ -106,7 +105,7 @@ class MainActivity : AppCompatActivity() {
             }
             MyConexionBT = ConnectedThread(btSocket)
             MyConexionBT?.start()
-            println("passou aqui")
+            
         }
     }
 
@@ -117,12 +116,10 @@ class MainActivity : AppCompatActivity() {
             val buffer = ByteArray(256)
             var bytes: Int
 
-            //Ele permanece no modo de escuta para determinar a entrada de dados
             while (true) {
                 try {
                     bytes = mmInStream!!.read(buffer)
                     val readMessage = String(buffer, 0, bytes)
-                    // Envia os dados pro handler
                     bluetoothIn!!.obtainMessage(handlerState, bytes, -1, readMessage).sendToTarget()
                 } catch (e: IOException) {
                     break
@@ -130,12 +127,10 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        //Envio de quadros
         fun write(input: String) {
             try {
                 mmOutStream!!.write(input.toByteArray())
             } catch (e: IOException) {
-                //se não for possível enviar dados, a conexão é encerrada
                 Toast.makeText(baseContext, "A conexão falhou", Toast.LENGTH_LONG).show()
                 finish()
             }
